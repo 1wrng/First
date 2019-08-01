@@ -284,3 +284,83 @@ void *memset(void *s, int ch, [size_t](https://baike.so.com/doc/6847447-24969833
 
 
 类的大括号后记得加分号
+
+构造函数名称与类一致，析构函数在局部对象被删除前（即构造函数执行后对象被删除）前执行
+
+析构函数即构造函数前加~
+
+在类中建立void函数
+
+可在setup中建立类的对象来调用类中的函数，e.g：类名 对象名（建立对象）
+
+​											对象名.函数名（调用函数）
+
+类中：
+
+Led（int userLedPin）
+
+
+
+构造：
+
+Led::Led(int userLedPin){
+
+ledPin=userLedPin
+
+pinMode(ledpin,OUTPUT)
+
+}
+
+Setup中：
+
+Led myled2(7)      此时7被赋值到userLedPin中再被赋值到ledPin
+
+
+
+同时，Led::Led(int userLedPin): ledpin(userLedpin)就是此构造函数中的userLedPin被ledPin赋值
+
+
+
+可有多个构造函数
+
+类的封装：通过在私有成员中设立变量，再通过构造函数在外获取私有变量
+
+e.g:         private:
+
+​			ledpin=2
+
+
+
+int Led::getLedPin(){
+
+​	return ledpin
+
+}               此时getLedPin（）就被ledpin赋值
+
+void Led::setLedPin(int userLedpin){
+
+​	ledPin=userLedpin
+
+​	pinMode(ledPin, OUTPUT)
+
+}     		 此时可在后面的setup中使用此函数改变默认引脚；     这两个函数即是类的风住哪个，不给这两段函数用户即无法获取私有成员中的变量。
+
+
+
+建立库：
+
+h文件为头文件，cpp为源文件；此项目中h文件中为类，cpp文件中为对类的函数的诠释
+
+建立两个文档，一个为cpp，一个为h，两个文件的前缀都为类的名称
+
+
+
+h：#ifndef _文件名称（全大写)  _H _  (无空格)
+
+​      #define  与上面一致
+
+#include<Arduino.h>
+
+
+
+cpp: #include "h文件全名“
