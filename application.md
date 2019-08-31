@@ -309,6 +309,12 @@ void *memset(void *s, int ch, [size_t](https://baike.so.com/doc/6847447-24969833
 
 
 
+
+
+struct不能定义函数，而class可以
+
+
+
 类的大括号后记得加分号
 
 构造函数名称与类一致，析构函数在局部对象被删除前（即构造函数执行后对象被删除）前执行
@@ -359,7 +365,7 @@ e.g:         private:
 
 
 
-int Led::getLedPin(){
+**int** Led::getLedPin(){
 
 ​	return ledpin
 
@@ -371,7 +377,7 @@ void Led::setLedPin(int userLedpin){
 
 ​	pinMode(ledPin, OUTPUT)
 
-}     		 此时可在后面的setup中使用此函数改变默认引脚；     这两个函数即是类的封装，不给这两段函数用户即无法获取私有成员中的变量。
+}     		 此时可在后面的setup中使用此函数改变默认引脚；     这两个函数即是类的封装，不给这两段函数用户即无法获取私有成员中的变量。 在setup中先用setledpin再用getledpin，setledpin可对私有成员变量直接修改。
 
 
 
@@ -435,4 +441,20 @@ cpp: #include "h文件全名“
 总结：类为具有相同属性和行为的对象统称，对象为具体化表现形式
 
 封装是为了把对象的设计者和对象的使用者分开。
+
+
+
+class Car{
+
+​	public:
+
+​		car()
+
+​	};
+
+Car::car{
+
+}
+
+
 
