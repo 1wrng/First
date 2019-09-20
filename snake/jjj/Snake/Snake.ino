@@ -1,4 +1,14 @@
 #include <LedControl.h>
+#define D0 -1
+#define D1 294
+#define D2 330
+#define D3 350
+#define D4 393
+#define D5 441
+#define D6 495
+#define D7 556
+int length;
+int tonepin=6;
 
 
 
@@ -41,6 +51,7 @@ void setup() {
 	initialize();         // initialize pins & LED matrix
 	calibrateJoystick(); // calibrate the joystick home (do not touch it)
 	showSnakeMessage(); // scrolls the 'snake' message around the matrix
+  pinMode(tonepin,OUTPUT);
 }
 
 
@@ -49,6 +60,7 @@ void loop() {
 	scanJoystick();    // watches joystick movements & blinks with food
 	calculateSnake();  // calculates snake parameters
 	handleGameStates();
+
 
 	// uncomment this if you want the current game board to be printed to the serial (slows down the game a bit)
 	// dumpGameBoard();
@@ -157,7 +169,7 @@ void scanJoystick() {
 		if (snakeSpeed == 0) snakeSpeed = 1; // safety: speed can not be 0
 
 		// determine the direction of the snake
-		analogRead(Pin::joystickY) < joystickHome.y - joystickThreshold ? snakeDirection = up    : 0;
+		analogRead(Pin::joystickY) < joystickHome.y - 450 ? snakeDirection = up    : 0;
 		analogRead(Pin::joystickY) > joystickHome.y + joystickThreshold ? snakeDirection = down  : 0;
 		analogRead(Pin::joystickX) < joystickHome.x - joystickThreshold ? snakeDirection = left  : 0;
 		analogRead(Pin::joystickX) > joystickHome.x + joystickThreshold ? snakeDirection = right : 0;
@@ -221,6 +233,10 @@ void calculateSnake() {
 
 	// change the age of the snake head from 0 to 1
 	age[snake.row][snake.col]++;
+  
+  
+ 
+  
 }
 
 
@@ -272,6 +288,7 @@ void handleGameStates() {
 		snakeDirection = 0;
 		memset(age, 0, sizeof(age[0][0]) * 8 * 8);
 		matrix.clearDisplay(0);
+
 	}
 }
 
@@ -347,20 +364,21 @@ void dumpGameBoard() {
 
 
 
+
 // --------------------------------------------------------------- //
 // -------------------------- messages --------------------------- //
 // --------------------------------------------------------------- //
 
 
 const PROGMEM bool snejkMessage[8][56] = {
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,1,1,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,1,0,0,1,1,0,0,0,0,0,0,1,1,0,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0}
+	{0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,1,1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,1,0,0,1,1,0,0,0,0,0,0,1,1,0,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,1,1,1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,1,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,0,1,1,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 };
 
 const PROGMEM bool gameOverMessage[8][90] = {
@@ -492,11 +510,11 @@ const PROGMEM bool digits[][8][8] = {
 // scrolls the 'snake' message around the matrix
 void showSnakeMessage() {
 	for (int d = 0; d < sizeof(snejkMessage[0]) - 7; d++) {
-		for (int col = 0; col < 8; col++) {
+		for (int row = 0; row < 8; row++) {
 			delay(messageSpeed);
-			for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
 				// this reads the byte from the PROGMEM and displays it on the screen
-				matrix.setLed(0, row, col, pgm_read_byte(&(snejkMessage[row][col + d])));
+				matrix.setLed(0, row, col, pgm_read_byte(&(snejkMessage[col][row + d])));
 			}
 		}
 	}
