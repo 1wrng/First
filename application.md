@@ -472,3 +472,24 @@ Car::car{
 
 
 
+## Tensorflow学习
+
+一个Tensor即为一个节点
+
+![image-20200311001042150](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200311001042150.png)
+
+可以有各种类型的tensor
+
+![image-20200311001324549](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200311001324549.png)
+
+随机数
+
+![image-20200311180306196](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200311180306196.png)
+
+variable
+
+![image-20200311180400064](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200311180400064.png)
+
+![image-20200311180548008](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200311180548008.png)
+
+在tf2.0中，所有变量或constant都存在于动态，不需要run系统自动执run操作，也就是可以直接print
