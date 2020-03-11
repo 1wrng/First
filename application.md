@@ -493,3 +493,30 @@ variable
 ![image-20200311180548008](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200311180548008.png)
 
 在tf2.0中，所有变量或constant都存在于动态，不需要run系统自动执run操作，也就是可以直接print
+
+用
+
+```python
+tf.__version__
+```
+
+可查看当前tensorflow版本
+
+
+
+#### 线性回归
+
+```python
+x=data.^
+y=data.^
+model=tf.keras.Sequential()
+model.add(tf.keras.Dense(1,input_shape=(1,)))#此时为一维空间模型，前一个1代表输出数据的维度，后一个1表示输入数据的维度，1后面有个逗号表示这是元组
+
+model.summary()#显示模型，param中的数据表示有几个参数
+model.compile(optimizer='adam'
+             loss='mse')
+history=model.fit(x,y,epoches=100)#100为训练次数，此过程loss会不断减小
+model.predict(x)
+model.predict(pd.Series([20]))#此处即当x=20时预测y的结果
+```
+
