@@ -50,8 +50,6 @@ ipconfig查ip地址 无空格
 
 第二行为wifi给你电脑的ip
 
-prt sc然后直接粘贴
-
 打开下端：control+shift+~
 
 加＃：control+/
@@ -514,9 +512,32 @@ model.add(tf.keras.Dense(1,input_shape=(1,)))#此时为一维空间模型，前�
 
 model.summary()#显示模型，param中的数据表示有几个参数
 model.compile(optimizer='adam'
-             loss='mse')
+             loss='mse')#compile是自定义loss函数，optimizer是优化器，mse是均方差
 history=model.fit(x,y,epoches=100)#100为训练次数，此过程loss会不断减小
 model.predict(x)
 model.predict(pd.Series([20]))#此处即当x=20时预测y的结果
+```
+
+list和ndarray和Tensor的区别 	
+
+![image-20200312235735591](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200312235735591.png)
+
+```python
+data=pd.read_csv('.\Advertising.csv')
+data.head()
+x=data.iloc[:,1,-1]
+y=data.iloc[:,-1]
+model=tf.keras.Sequential([tf.keras.layers.Dense(10,input_shape=(3,)，activation='relu')
+      tf.keras.layers.Dense(1)                   ])#有10个隐藏层，input_shape=（3，）是指有3个特征,后一个dense是1指输出的1个标签
+model.summary()
+model.compile(optimizer='adam'
+              loss='mse'
+)
+
+model.fit(x,y,epoches=100)
+test=data.iloc[:,10,1:-1]
+model.predict(test)#预测x的值
+
+
 ```
 
