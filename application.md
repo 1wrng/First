@@ -522,6 +522,8 @@ list和ndarray和Tensor的区别
 
 ![image-20200312235735591](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200312235735591.png)
 
+多层感知机（神经网络第一次实现）
+
 ```python
 data=pd.read_csv('.\Advertising.csv')
 data.head()
@@ -538,6 +540,38 @@ model.fit(x,y,epoches=100)
 test=data.iloc[:,10,1:-1]
 model.predict(test)#预测x的值
 
+
+```
+
+逻辑回归与交叉熵
+
+sigmoid是概率分布激活函数
+
+mse用于惩罚与损失在同一数量级时，而对于分类问题用交叉熵处理loss更好
+
+![image-20200317004237305](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200317004237305.png)
+
+![image-20200316080343483](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200316080343483.png)
+
+
+
+```python
+data=pd.read_csv(.\creit-a.csv,header=none)#表示默认加个第一行分别为1234567作为列表序列，即把原来表格第一行往下移
+data.head()
+data.iloc[:,-1].value_counts()#查看最后一列的数据分布情况
+x=data.iloc[:,:-1]#最后一列的前面都作为特征
+y=data.iloc[:,-1].replace(-1,0)#将最后一列中的-1都换成0
+model=tf.keras.Sequential()
+model.add(tf.keras.layers.Dense(4,input_shape=(15,),activation='relu'))
+model.add(tf.keras.layers.Dense(4,activation='relu'))#从第二层开始便不需要说明特征数
+model.add(tf.keras.layers.Dense(1,activation='sigmoid'))#sigmoid为概率分布激活函数
+model.summary()#有两层隐藏层，一层输出层
+model.compile(optimizer='adam'
+             loss='binary_crossentropy'
+             metrics=['accuracy'])#loss使用二元交叉熵算法，metrics是在计算准确率
+history = model.fit(x,y,epochs=100)
+history.history.keys()#调用字典，记录哪两个数据在变化
+plt.plot(history.epochs,history.history.get('loss'))#调用字典中的loss数据
 
 ```
 
