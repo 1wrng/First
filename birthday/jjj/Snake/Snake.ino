@@ -165,7 +165,7 @@ void scanJoystick() {
 	while (millis() < timestamp) {
 		// calculate snake speed logarithmically (10...1000ms)
 		float raw = mapf(analogRead(Pin::potentiometer), 0, 1023, 0, 1);
-		snakeSpeed = mapf(lnx(raw), lnx(0), lnx(1), 10, 1000);
+		snakeSpeed = mapf(lnx(raw), lnx(0), lnx(1), 10, 800);
 		if (snakeSpeed == 0) snakeSpeed = 1; // safety: speed can not be 0
 
 		// determine the direction of the snake
@@ -523,11 +523,11 @@ const PROGMEM bool digits[][8][8] = {
 // scrolls the 'snake' message around the matrix
 void showSnakeMessage() {
 	for (int d = 0; d < sizeof(snejkMessage[0]) - 7; d++) {
-		for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 8; col++) {
 			delay(messageSpeed);
-			for (int col = 0; col < 8; col++) {
+			for (int row = 0; row < 8; row++) {
 				// this reads the byte from the PROGMEM and displays it on the screen
-				matrix.setLed(0, row, col, pgm_read_byte(&(snejkMessage[col][row + d])));
+				matrix.setLed(0, row, col, pgm_read_byte(&(snejkMessage[row][col + d])));
 			}
 		}
 	}
