@@ -506,20 +506,30 @@ list和ndarray和Tensor的区别
 
 多层感知机（神经网络第一次实现）
 
+激活函数即看输入值是否达到阈值（拟合非线性问题）
+
+![image-20200331230524617](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200331230524617.png)
+
+![image-20200331230606841](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200331230606841.png)
+
+![image-20200331230632367](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200331230632367.png)
+
+![image-20200331230650891](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200331230650891.png)
+
 ```python
 data=pd.read_csv('.\Advertising.csv')
 data.head()
-x=data.iloc[:,1,-1]
-y=data.iloc[:,-1]
-model=tf.keras.Sequential([tf.keras.layers.Dense(10,input_shape=(3,)，activation='relu')
-      tf.keras.layers.Dense(1)                   ])#有10个隐藏层，input_shape=（3，）是指有3个特征,后一个dense是1指输出的1个标签
+x=data.iloc[:,1：-1]#第二行到第四行
+y=data.iloc[:,-1]#第五行
+model=tf.keras.Sequential([tf.keras.layers.Dense(10,input_shape=(3,),activation='relu'),
+      tf.keras.layers.Dense(1)                   ])#Sequential是顺序模型，直接在里面写dense可省去add。1个隐藏层中有10个单元，input_shape=（3，）是指输入的数据为3个特征,后一个dense是1指输出的1个标签
 model.summary()
-model.compile(optimizer='adam'
+model.compile(optimizer='adam',
               loss='mse'
 )
 
-model.fit(x,y,epoches=100)
-test=data.iloc[:,10,1:-1]
+model.fit(x,y,epochs=100)
+test=data.iloc[:10,1:-1]
 model.predict(test)#预测x的值
 
 
@@ -529,16 +539,18 @@ model.predict(test)#预测x的值
 
 sigmoid是概率分布激活函数
 
+![image-20200401003132761](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401003132761.png)
+
 mse用于惩罚与损失在同一数量级时，而对于分类问题用交叉熵处理loss更好
 
 ![image-20200317004237305](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200317004237305.png)
 
 ![image-20200316080343483](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200316080343483.png)
 
-
+二分类问题
 
 ```python
-data=pd.read_csv(.\creit-a.csv,header=none)#表示默认加个第一行分别为1234567作为列表序列，即把原来表格第一行往下移
+data=pd.read_csv('.\credit-a.csv',header=none)#表示默认加个第一行分别为1234567作为列表序列，即把原来表格第一行往下移
 data.head()
 data.iloc[:,-1].value_counts()#查看最后一列的数据分布情况
 x=data.iloc[:,:-1]#最后一列的前面都作为特征
@@ -546,10 +558,10 @@ y=data.iloc[:,-1].replace(-1,0)#将最后一列中的-1都换成0
 model=tf.keras.Sequential()
 model.add(tf.keras.layers.Dense(4,input_shape=(15,),activation='relu'))
 model.add(tf.keras.layers.Dense(4,activation='relu'))#从第二层开始便不需要说明特征数
-model.add(tf.keras.layers.Dense(1,activation='sigmoid'))#sigmoid为概率分布激活函数
+model.add(tf.keras.layers.Dense(1,activation='sigmoid'))#sigmoid为概率分布激活函数，此层为输出层
 model.summary()#有两层隐藏层，一层输出层
-model.compile(optimizer='adam'
-             loss='binary_crossentropy'
+model.compile(optimizer='adam',
+             loss='binary_crossentropy',
              metrics=['accuracy'])#loss使用二元交叉熵算法，metrics是在计算准确率
 history = model.fit(x,y,epochs=100)
 history.history.keys()#调用字典，记录哪两个数据在变化
@@ -559,10 +571,36 @@ plt.plot(history.epochs,history.history.get('loss'))#调用字典中的loss数�
 
 
 
-Softmax层
+Softmax层(sigmoid对单个样本，softmax覆盖所有样本)
+
+![image-20200331192133490](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200331192133490.png)
 
 ![image-20200322152554273](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200322152554273.png)
 
 ![image-20200322180054564](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200322180054564.png)
 
 softmax每个样本的分量和为1
+
+Fashion MNIST可以直接在tensorflow中引入
+
+```python
+(train_image,train_lable),(test_image,test_label)=tf.keras.datasets.fashion_mnist.load_data()#与上面一句是同一行
+print(test_image.shape)
+print(train_image.shape)#60000张图像，28x28的图像
+plt.imshow(train_image[0])
+np.max(train_image[0])
+print(train_lable)#用数字对lable中的图像顺序标类
+train_image=train_image/255
+test_image=test_image/255 #对test_image映射，使其取值范围变为0到1
+model=tf.keras.Sequential()
+model.add((tf.keras.layers.Flatten(input_shape=(28,28))) #变为28x28的向量
+model.add(tf.keras.layers.Dense(128,activation='relu'))#输出128个隐藏单元，此层为隐藏层。
+model.add(tf.keras.layers.Dense(10,activation='softmax'))#输出十个数值变为概率分布，10个概率和为1，此层为输出层
+model.compile(optimizer=‘adam'
+              loss='sparse_catogorical_crossentropy'
+              metrics=['acc'])#lable使用数字编码，用sparse_catogorical_crossentropy
+          
+model.fit(train image,train lable, epochs=5)
+model.evaluate(test image,test lable)
+```
+
