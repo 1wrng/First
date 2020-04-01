@@ -596,11 +596,88 @@ model=tf.keras.Sequential()
 model.add((tf.keras.layers.Flatten(input_shape=(28,28))) #变为28x28的向量
 model.add(tf.keras.layers.Dense(128,activation='relu'))#输出128个隐藏单元，此层为隐藏层。
 model.add(tf.keras.layers.Dense(10,activation='softmax'))#输出十个数值变为概率分布，10个概率和为1，此层为输出层
-model.compile(optimizer=‘adam'
-              loss='sparse_catogorical_crossentropy'
+model.compile(optimizer=‘adam'，
+              loss='sparse_catogorical_crossentropy'，
               metrics=['acc'])#lable使用数字编码，用sparse_catogorical_crossentropy
           
-model.fit(train image,train lable, epochs=5)
-model.evaluate(test image,test lable)
+model.fit(train_image,train_lable, epochs=5)
+model.evaluate(test_image,test_lable)
 ```
 
+迁移学习
+
+![image-20200401215418024](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401215418024.png)
+
+![image-20200401215539235](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401215539235.png)
+
+![image-20200401215718761](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401215718761.png)
+
+![image-20200401215753647](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401215753647.png)
+
+![image-20200401220047322](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401220047322.png)
+
+![image-20200401220241290](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401220241290.png)
+
+
+
+
+
+独热编码（准确率和loss等几乎一样，只是编码方式有差别）
+
+```python
+train_lable_onehot=tf.keras.utils.to_categorical(train_lable)
+```
+
+
+
+优化函数、学习速率与反向传播算法
+
+![image-20200401230954610](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401230954610.png)
+
+![image-20200401231221437](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401231221437.png)
+
+![image-20200401231247189](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401231247189.png)
+
+![image-20200401231710191](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401231710191.png)
+
+![image-20200401231915939](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401231915939.png)
+
+![image-20200401231959914](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401231959914.png)
+
+![image-20200401232020531](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401232020531.png)
+
+![image-20200401232119802](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401232119802.png)
+
+![image-20200401232136394](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401232136394.png)
+
+![image-20200401232250542](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401232250542.png)
+
+![image-20200401232318581](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401232318581.png)
+
+![image-20200401232416060](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401232416060.png)
+
+```python
+model.compile(optimizer=tf.keras.optimizers.Adam(lr=0.01),
+              loss='categorical_crossentropy',
+              metrics=['acc'])#这里使adam默认用的lr参数从0.001变为0.01
+```
+
+
+
+网络优化与超参数选择
+
+网络容量可认为与网络中的可训练参数成正比
+
+![image-20200401233258811](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401233258811.png)
+
+![image-20200401233546116](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401233546116.png)
+
+![image-20200401233614673](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401233614673.png)
+
+![image-20200401233652889](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401233652889.png)
+
+![image-20200401233741941](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200401233741941.png)
+
+params是可训练参数
+
+***增加网络拟合能力可以提升模型的准确率***
