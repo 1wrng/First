@@ -733,3 +733,96 @@ LSTM
 ![image-20200406164451733](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200406164451733.png)
 
 LSTM引入选择性遗忘，对前一状态通过遗忘门结合当今状态通过点积和加法得到输出结果
+
+
+
+批标准化
+
+![image-20200407000418529](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000418529.png)
+
+![image-20200407000426063](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000426063.png)
+
+![image-20200407000431728](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000431728.png)
+
+![image-20200407000438147](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000438147.png)
+
+![image-20200407000442598](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000442598.png)
+
+![image-20200407000446926](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000446926.png)
+
+![image-20200407000451384](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000451384.png)
+
+![image-20200407000455660](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000455660.png)
+
+![image-20200407000500164](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000500164.png)
+
+![image-20200407000508622](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407000508622.png)
+
+![image-20200407221736521](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407221736521.png)
+
+![image-20200407221742727](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407221742727.png)
+
+![image-20200407221747629](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407221747629.png)
+
+![image-20200407221754734](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407221754734.png)
+
+![image-20200407221819202](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200407221819202.png)
+
+减均值除方差
+
+目前效果较好的lstm1
+
+```python
+model=keras.models.Sequential([
+    keras.layers.Embedding(10000,50,input_length=300),
+#     keras.layers.GlobalAveragePooling1D(),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=64,return_sequences= True)),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=64,return_sequences= False)),#return_sequences,True是采用所有输出，False是采用最后一步输出
+    keras.layers.Dense(64,activation='relu'),
+#     keras.layers.BatchNormalization(),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(64,activation='relu'),
+#     keras.layers.BatchNormalization(),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(1,activation='sigmoid'),
+#     keras.layers.BatchNormalization(),
+    
+])
+model.summary()
+
+model.compile(optimizer=tf.keras.optimizers.Adam(lr=0.01),
+              loss='binary_crossentropy',
+              metrics=['acc'])
+ history=model.fit(x_train,y_train,epochs=15,batch_size=64,validation_split=0.3)
+```
+
+
+
+目前效果较好的lstm2
+
+```python
+model=keras.models.Sequential([
+    keras.layers.Embedding(10000,50,input_length=300),
+#     keras.layers.GlobalAveragePooling1D(),
+#     keras.layers.Bidirectional(keras.layers.LSTM(units=64,return_sequences= True)),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=64,return_sequences= False)),#return_sequences,True是采用所有输出，False是采用最后一步输出
+#     keras.layers.BatchNormalization(),
+    keras.layers.Dense(64,activation='relu'),
+
+    keras.layers.Dropout(0.3),
+#     keras.layers.BatchNormalization(),
+    keras.layers.Dense(64,activation='relu'),
+    
+    keras.layers.Dropout(0.3),
+#     keras.layers.BatchNormalization(),
+    keras.layers.Dense(32,activation='relu'),
+
+    keras.layers.Dropout(0.3),
+#     keras.layers.BatchNormalization(),
+    keras.layers.Dense(1,activation='sigmoid'),
+
+    
+])
+model.summary()
+```
+
