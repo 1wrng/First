@@ -826,3 +826,34 @@ model=keras.models.Sequential([
 model.summary()
 ```
 
+目前比赛样本效果还行的lstm
+
+```python
+model=keras.models.Sequential([
+    keras.layers.Embedding(10000,50,input_length=300),
+#     keras.layers.GlobalAveragePooling1D(),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=128,return_sequences= True)),
+    keras.layers.Bidirectional(keras.layers.LSTM(units=128,return_sequences= False)),#return_sequences,True是采用所有输出，False是采用最后一步输出
+    keras.layers.BatchNormalization(),
+    keras.layers.Dense(64,activation='relu'),
+
+    keras.layers.Dropout(0.3),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dense(32,activation='relu'),
+
+    
+    keras.layers.Dropout(0.3),
+    keras.layers.BatchNormalization(),   
+    keras.layers.Dense(32,activation='relu',kernel_regularizer=keras.regularizers.l2(0.001)),
+
+    
+    
+    keras.layers.Dropout(0.3),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dense(1,activation='sigmoid',kernel_regularizer=keras.regularizers.l2(0.001)),
+
+    
+])
+model.summary()
+```
+
