@@ -61,7 +61,7 @@ sta_if = network.WLAN(network.STA_IF)
 sta_if.active(True)
 sta_if.connect('rjxy', '7uuh8baa')
 sta_if.isconnected()
-sta_if.ifconfig()
+sta_if.ifconfig() 
 
 执行完此行命令记得在webrel上把ip改为第一行的
 
@@ -857,3 +857,132 @@ model=keras.models.Sequential([
 model.summary()
 ```
 
+
+
+### CNN
+
+![image-20200923232338424](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923232338424.png)
+
+![image-20200923232405130](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923232405130.png)
+
+![image-20200923232424479](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923232424479.png)
+
+![image-20200923232453850](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923232453850.png)
+
+![image-20200923232513354](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923232513354.png)
+
+原理
+
+![image-20200923234036245](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234036245.png)
+
+![image-20200923234045116](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234045116.png)
+
+![image-20200923234052525](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234052525.png)
+
+![image-20200923234059844](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234059844.png)
+
+![image-20200923234112847](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234112847.png)
+
+![image-20200923234118984](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234118984.png)
+
+![image-20200923234125219](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234125219.png)
+
+![image-20200923234131185](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234131185.png)
+
+![image-20200923234137052](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234137052.png)
+
+![image-20200923234142651](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20200923234142651.png)
+
+## Conv2D参数
+
+### input_shape
+
+作为第一个层时，必须设置输入形状（忽略样本维度），例如input_shape=(128, 128, 3) for 128x128 表示128*128的RGB图片。
+
+### filters
+
+卷积过滤器数量，int类型，必须，例如32，表示生成32个特征图
+
+### kernel_size
+
+卷积窗口大小，int/tuple类型，必须，例如(3,3)表示宽为3高为3的滑动窗口，只传一个整数时表示宽和高都一样。
+
+### strides
+
+卷积窗口移动步进，int/tuple类型，默认为(1,1)表示每次只滑动1个单元，只传一个整数表示宽和高的步进都一样，当取值不为1时，dilation_rate必须为1。
+
+### padding
+
+取值为valid或者same，valid表示只取有效值， same表示填充以和原图保持相同大小。
+
+### data_format
+
+输入数据格式，取值为channels_last或者channels_first。默认值为channels_last。
+channels_last： 输入shape为(batch, height, width, channels)
+channels_first：输入shape为(batch, channels, height, width)
+
+### dilation_rate
+
+空洞卷积比例，int/tuple类型，默认值为(1,1)，当取值不为1时，strides必须为1。
+
+### activation
+
+激活函数，不传时默认为a(x)=x
+
+### use_bias
+
+是否使用偏置向量，默认为True
+
+### kernel_initializer
+
+卷积核初始化器，默认为glorot_uniform
+
+### bias_initializer
+
+偏置向量初始化器，默认为zeros
+
+### kernel_regularizer
+
+卷积核正则化函数
+
+### bias_regularizer
+
+偏置向量正则化函数
+
+### activity_regularizer
+
+输出结果正则化函数
+
+### kernel_constraint
+
+卷积核约束函数
+
+### bias_constraint
+
+偏置向量约束函数
+
+
+
+## Maxpooling2D
+
+### pool_size
+
+下采样比例，int/ tuple类型, 例如取值为(2,2)时，输入为(s,32,32,c)，那么输出为(s,16,16,c)。
+
+### strides
+
+步进值，int/tuple, 或者None.如果取值为None, 步进默认等于pool_size。
+
+### padding
+
+取值为valid或者same
+
+### data_format
+
+输入数据格式，取值为channels_last (默认)或者 channels_first
+
+
+
+## 详细
+
+**CNN**是一种通过卷积计算的前馈神经网络，其是受生物学上的感受野机制提出的，具有平移不变性，使用卷积核，最大的应用了局部信息，保留了平面结构信息。
