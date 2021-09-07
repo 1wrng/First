@@ -986,3 +986,76 @@ channels_first：输入shape为(batch, channels, height, width)
 ## 详细
 
 **CNN**是一种通过卷积计算的前馈神经网络，其是受生物学上的感受野机制提出的，具有平移不变性，使用卷积核，最大的应用了局部信息，保留了平面结构信息。
+
+
+
+git更新：git clone https://github.com/git/git
+
+## 天池AI学习
+
+### 神经网络（上）
+
+#### 人工神经元
+
+![image-20210904012815809](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904012815809.png)
+
+输入为离散的，即0或1
+
+输入→权重→求和→激活函数→输出
+
+y=wx+b中：权重即是w，偏置即是b。这个表达式就是单层感知机的形式
+
+![image-20210904011902966](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904011902966.png)
+
+x1和x2是输入，表格中代表输出
+
+在逻辑与中：权重都是2，偏置是3
+
+![image-20210904012438322](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904012438322.png)
+
+在此图中，x1和x2的权重都是1，但是偏置不同，单层感知机不能实现异或操作
+
+#### 单层感知机
+
+![image-20210904013202304](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904013202304.png)
+
+输入可以是浮点型
+
+比如sigmoid函数就是这样的结构
+
+此图中的数学表达式：权重→求和→减去偏置→激活函数
+
+![image-20210904014813995](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904014813995.png)
+
+图中的数学表达式即为梯度下降法的表达式
+
+通过这个准则去更新x，对于感知机来说，表达式中的x就是权重（w）
+
+Wt表示t时刻的权重；Wt+1表示下一步的权重
+
+学习率用于控制更新的步长，右下角两幅图的学习率分别是0.26和0.1，0.26的步长太大，寻找极值的效果差，每一次更新幅度大，要寻找合适的学习率
+
+![image-20210904020223435](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904020223435.png)
+
+要把两种颜色分开，数据是三维坐标，一维是偏置，二维是x坐标，三维是y坐标；为输入数据的格式，数据标签分别为1和-1→y=0为分界线
+
+需要划一条线来把数据分开
+
+![image-20210904020818031](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904020818031.png)
+
+L为LOSS函数，此时L即为优化目标
+
+Δw表示当前要更新的值
+
+全局变量中：X为输入，Y为标签，W为权重，lr为学习率，n为迭代次数
+
+有两条线都能分割数据→用单层感知机来解决这类问题的时候答案是多个的，不是唯一的，有多个正确答案
+
+给W不同的初始值，优化的时候就可能得到不同的优化结果
+
+
+
+![image-20210904022333557](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210904022333557.png)
+
+无论怎么划，都不能有一条直线能把左图的数据给正确划分，要增加神经网络的深度，增加更多的非线性操作才能实现异或操作。
+
