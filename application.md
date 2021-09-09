@@ -1059,3 +1059,46 @@ L为LOSS函数，此时L即为优化目标
 
 无论怎么划，都不能有一条直线能把左图的数据给正确划分，要增加神经网络的深度，增加更多的非线性操作才能实现异或操作。
 
+### 神经网络（下）
+
+![image-20210909094951866](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909094951866.png)
+
+在隐藏层中对输入进行非线性处理，再对其用激活函数，能实现更多的非线性操作
+
+![image-20210909095723933](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909095723933.png)
+
+对比线性分界面与非线性分界面，非线性在式子上加了一个σ（非线性激活函数），即o与x之前有一个σ函数，若中间有更多隐藏层，则可以有更多非线性的变化，非线性变化实质上是对数据从一个空间向另一个空间转换
+
+![image-20210909152434284](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909152434284.png)
+
+![image-20210909152549215](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909152549215.png)
+
+前向传播里传的是权重，而反向传播传的是梯度，反向传播的起始层是损失函数，图右绿圈是真值，黑圈是预测值
+
+![image-20210909153137612](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909153137612.png)
+
+右上角的误差算法为C（损失函数）对Xjl的求导
+
+![image-20210909161742491](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909161742491.png)
+
+![image-20210909163333826](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909163333826.png)
+
+![image-20210909164018191](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909164018191.png)
+
+可见层也是数据层，通用的玻尔兹曼机即使是层与层之间的神经节点也有连接
+
+在玻尔兹曼机中，并没有明确数据输入和输出的方向性，传播方向不确定
+
+RNN和递归神经网络其实就是非前馈神经网络
+
+![image-20210909164751131](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909164751131.png)
+
+![image-20210909165105235](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909165105235.png)
+
+![image-20210909165527683](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909165527683.png)
+
+如softmax所示，如果直接把图片作为输入，而在图片的像素中，一个像素周围相似的像素会与它的连接更紧密，但是离的远一点的连接就不那么紧密
+
+那么这就无法区分它的结构特点，因为这个神经网络是全连接的，它无法区分局部的结构关系
+
+而卷积比全连接层多了通过卷积对图像局部的特征求取
