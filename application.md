@@ -1141,6 +1141,55 @@ S层进行特征提取，C层对S层的结果进行进一步的抽象，对S层�
 
 ![image-20210910235340415](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210910235340415.png)
 
-22分18
+![image-20210913225025180](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913225025180.png)
 
-njknkjnkjnkjnkjn
+输出特征图中有Co个通道，其中每一个通道都与输入通道中的每个通道进行连接，而要与相同数量的卷积核对应卷积计算，所以卷积核的数量应该是Ci x Co
+
+![image-20210913230016505](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913230016505.png)
+
+若对输入为3x3的图像进行2x2的滑块进行卷积，那么就会有2x2的输出，但经过padding层后在3x3的图像外面加多了一圈再进行2x2的卷积，就会得到4x4的输出，比原始的输出要大
+
+
+
+这样做更多是为了防止图像的分辨率发生变化
+
+![image-20210913230432108](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913230432108.png)
+
+之前是默认步长为1，也就是挨个滑动
+
+此处的卷积是3x3，左图步长为1挨个滑动
+
+stride过大很多时候是指步长比卷积核还要的宽还要大的情况，容易造成信息遗漏
+
+![image-20210913231126110](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913231126110.png)
+
+卷积核大小表示为k*k，在这里表示为它的一边，用于输出大小的计算
+
+![image-20210913231450371](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913231450371.png)
+
+Max pool：如左上角的4x4中则取6（即最大数）
+
+Avg pool：如左上角的4x4则取四个数的平均数也就是3
+
+这样池化可以降低分辨率，减小算度，压缩特征进行抽象，因为很多时候对图像并不需要关心太多的细节
+
+![image-20210913232730934](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913232730934.png)
+
+Conv1中的四个3是经由Raw Image中的3x3卷积得到的，而Conv2中的5则是对应了Conv1中的数据，感受到了Raw Image中的5x5大小，所以它的感受野大小是5x5
+
+步长的大小对感受野的大小也是一个很重要的影响因素，感受野的计算方法对于不同的神经网络来说是比较复杂的，通常来说要用递归的方法进行计算，越深层的像素感受野是要基于前面一层的感受野计算然后才能得到
+
+![image-20210913233446116](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913233446116.png)
+
+一般来说，卷积大小都会比图像输入大小要小
+
+离的越远的像素之间的连接会更松，所以卷积神经网络的方法是合理的
+
+图像上局部与整体本身就有统计自相似性，有的时候规律可通过图像的局部的块就能够进行表征，那么在这个时候就没有必要对整个图像进行处理，只需要对一个小的图像块就能够完成一些功能，比如提取人脸，或者提取一些可辨识性的特征，故局部连接是很适合做图像处理的结构
+
+![image-20210913234238935](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210913234238935.png)
+
+如左图中的足球，若权重不共享则对足球进行迁移的时候图像就会发生变化，就不能得到黑色背景中的足球，而权重共享则能保证信息不变
+
+同时还能使卷积逐个扫描不重叠，移动方式不重叠，能够进行局部连接，能降低算度，相对于全连接降低了4哥数量级，这样才能构建一个更复杂的模型，才能对其进行继续优化
+
