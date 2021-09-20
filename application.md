@@ -1320,3 +1320,75 @@ sigmoid和tanh都满足Glorot的条件，这样能比较好的优化神经网络
 ##### 初始化的概念
 
 参数初始化 又称为 权重初始化 （weight initialization）或 权值初始化 。 深度学习模型训练过程的本质是对weight（即参数 W）进行更新，这需要每个参数有相应的初始值。 说白了，神经网络其实就是对权重参数w不停地迭代更新，以达到较好的性能。 模型权重的初始化对于网络的训练很重要，不好的初始化参数会导致梯度传播问题，降低训练速度；而好的初始化参数能够加速收敛，并且更可能找到较优解。 如果权重一开始很小，信号到达最后也会很小；如果权重一开始很大，信号到达最后也会很大。
+
+![image-20210920112121658](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920112121658.png)
+
+标准化/归一化 其实是一种数据预处理的方法
+
+零均值归一化就是减去均值再除以方差，将其归一化成一个标准的正态分布
+
+直方图均衡化中，cdp（rk）是累计概率分布
+
+右下图就是经过直方图均衡化得到的结果，使亮度分布更加均匀，上图的亮度分布只在0-100之间
+
+归一化可使图像的辨识度更高,使数据更加有效
+
+![image-20210920113954084](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920113954084.png)
+
+去除量纲的干扰：比如例子中的30和170和1和500000的数量级差距很大，若不归一化则训练的时候小的特征会被淹没
+
+保证数据有效：右图红色的是梯度，防止梯度消失等问题
+
+![image-20210920163128541](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920163128541.png)
+
+batch size就是每次训练的样本，c是通道数
+
+现没有c这个维度，每个维度单独进行计算
+
+让其进行归一化之后再乘**γ**再加**β**，这样就能调整数据分布跳出线性区域
+
+![image-20210920202749932](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920202749932.png)
+
+![image-20210920204411143](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920204411143.png)
+
+batch normoalization在每一个batch中都会计算他的均值和方差去进行归一化，但在训练的时候是用已经训练好的均值和方差来训练，尤其是batch越小的时候差异性越大，而batch renormalization是在对每一个batch进行均值和方差的计算时还要对它进行调整
+
+例如在计算完xi之后还要进行对其乘以r和一个d，上图中d和r的表达式贴的比较近，其实是分开的
+
+BN层其实就是batch normalization层
+
+
+
+![image-20210920205647088](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920205647088.png)
+
+LN层是对层进行归一化，把不同的通道拿到一起进行归一化，但对不同样本是进行单独计算的，它适合非定长输入，因为可以摆脱batch参数
+
+GN层可看作LN层的变种，G代表对通道进行分组
+
+IN层中H*W代表对每一个特征通道、样本都单独进行计算
+
+![image-20210920210708671](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920210708671.png)
+
+SN层其实就是对不同的标准化方法的结合
+
+不同的batch size也适用于不同的标准化方法
+
+![image-20210920211156460](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920211156460.png)
+
+对于平移和旋转不变性是有局限性的，随着神经网络的层数加深他们会变弱，不过在一定程度上可以获得平移旋转不变性
+
+![image-20210920211507324](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920211507324.png)
+
+最大池化能将一些比较明显的纹理特征保留下来，将一些比较平滑的信息抑制掉
+
+![image-20210920211851537](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920211851537.png)
+
+经过激活函数之后，基于它的激活值，要对他进行归一化，再进行概率分布的计算，有一定的随机性，但元素被选中的概率与数值大小成正相关，并不绝对，有一定的概率
+
+![image-20210920212225032](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920212225032.png)
+
+![image-20210920212421968](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210920212421968.png)
+
+学习完不管什么池化方法都差不多，甚至是把池化操作融到卷积里面，变成带步长的卷积操作来替代它也可以有这样的效果，只不过它需要学习参数而池化不需要学习参数
+
+所以池化并不是必要的，通常可以用带步长的卷积来代替池化的操作
