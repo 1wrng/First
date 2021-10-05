@@ -1083,6 +1083,8 @@ L为LOSS函数，此时L即为优化目标
 
 ![image-20210909163333826](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909163333826.png)
 
+反向传播算法能使误差最快达到最小
+
 ![image-20210909164018191](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20210909164018191.png)
 
 可见层也是数据层，通用的玻尔兹曼机即使是层与层之间的神经节点也有连接
@@ -1470,3 +1472,67 @@ L1和L2正则化都能控制参数
 标签有一些噪声就可以抑制过拟合，也有正则化的效果
 
 很多时候隐式正则化都能比显式正则化有更好的效果
+
+### 最优化
+
+![image-20211005155512420](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005155512420.png)
+
+最优化目标是loss函数并找到极值点使其最小
+
+![image-20211005160546780](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005160546780.png)
+
+对于深度学习模型来说，包含很多局部极小值，则最优化的目标就是获得不错的局部最小值，优化起来有一定的难度
+
+![image-20211005161343201](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005161343201.png)
+
+鞍点是最优化中比较常见的问题，尤其是要注意优化鞍点方向的调整
+
+![image-20211005162745231](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005162745231.png)
+
+学习率就是乘在梯度前面的一个乘因子，学习率越大，参数更新的幅度越大
+
+在左图的展示中，就有不同的学习率衰减的策略，就像蓝色的曲线，就代表了学习率较小，而在学习率较小的情况下，深度学习模型收敛的时间会比较长甚至不能收敛，故需要谨慎地选择学习率
+
+
+
+现在有许多深度学习优化方法，主要是一节优化方法，在其中，有基于更新方向的，也有基于选择更为合理的学习率的
+
+![image-20211005171426710](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005171426710.png)
+
+在上面的部分写了梯度下降法的式子，按着梯度的反方向来进行搜索，如在极值点的左边就往右搜索，在右边就往左搜索，满足梯度下降法的式子即可
+
+下图中的式子表示下一步的参数=这一步的参数—它的学习率乘它的梯度
+
+![image-20211005171949253](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005171949253.png)
+
+在右图中黑色表示SGD原来的样子，黑色的箭头表示SGD在优化时走的弯路，但用动量法（红色箭头），就可以少走很多弯路，，更快找到最优点
+
+而在计算式子中，相比原来的SGD，在这里多了一个βmn，这个βmn就是指数的衰减
+
+
+
+在左下图中，由A点沿着A点的梯度方向移动到B点，对于正常的梯度下降算法则是在B点沿着B点的梯度方向更新就可以了，而对于动量法，它要在B点累加上动量项（A点到B点的梯度项），也就是βmn，再与B点的梯度方向合并起来，作为B点真正的梯度更新方向。
+
+这是最常见的SGD算法的改进
+
+![image-20211005173132572](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005173132572.png)
+
+NGA法在动量法中添加了一个校正因子，算法如图理解即可，NAG算法效果不一定比动量法要好
+
+![image-20211005174010978](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005174010978.png)
+
+左边式子中的分母作为权重因子，Δθt是参数的更新幅度
+
+![image-20211005180211442](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005180211442.png)
+
+RMSprop可以一定程度上缓解到了后期学习率较小的问题，它的Gt不是对所有时间段的梯度都进行了累加，只累加了一个窗口的梯度，并且使用了动量平均计算
+
+![image-20211005182139950](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005182139950.png)
+
+Adam算法算是前面几个算法的融合，但也存在缺点，如图
+
+![image-20211005184330601](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005184330601.png)
+
+SGD的改进算法不一定更好，优点在于减少了调参工作量，但缺点在于不稳定，收敛效果不如精细调参的SGD算法
+
+![image-20211005200842248](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005200842248.png)
