@@ -77,7 +77,7 @@ int main()
 
 ![image-20211004202628301](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211004202628301.png)
 
-类型是int等数据类型
+类型是int等数据类型，int占4个字节，理论上存放32个1
 
 ![image-20211004203950392](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211004203950392.png)
 
@@ -92,3 +92,147 @@ CPU能读懂的最小单位是比特位-bit/b
 内存机构的最小寻址单位是字节-Byte/B 一个字节=8位
 
 当二进制所有位都是1时转换为十进制就是2的n次方-1，n就是二进制的位数
+
+
+
+在默认情况下int都是signed类型的也就是带符号的![image-20211005204910465](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005204910465.png)
+
+故int中不能放2的32次方-1，unsigned int 才能放2的32次方-1，int中只能存放2的31次方-1，因为左边第一位是符号位，符号位不表示值
+
+![image-20211005205111990](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005205111990.png)
+
+按位取反就是把1变成0，把0变成1（除了符号位）
+
+![image-20211005205503779](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005205503779.png)
+
+![image-20211005205638550](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005205638550.png)
+
+比如-2来说，到了第二步的-2应该是1 1 1 1 1 1 0 1，但加了1之后进了一位，就变成了1 1 1 1 1 1 1 0，正数需要多一个地方来表示0，而负数不需要，所以负数可以到-128而正数只能到127
+
+![image-20211005205916830](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005205916830.png)
+
+![image-20211005210158601](C:\Users\1wrng\AppData\Roaming\Typora\typora-user-images\image-20211005210158601.png)
+
+#### 字符和字符串
+
+用char来存放整数时
+
+```c
+#include <stdio.h>
+
+int main()
+{   
+	char a = 'C';
+	printf("%c=%d", a, a);
+	return 0;
+}
+```
+
+这样显示出来的结果是 c=67，因为C对应的ASCII表中的67
+
+而若代码是
+
+```c
+#include <stdio.h>
+
+int main()
+{   
+	char a = 70,b=105,c=115,d=104,e=67;
+	printf("%c%c%c%c%c",a,b,c,d,e);
+	return 0;
+}
+```
+
+得到的打印结果是FishC，%c是单个字符输出的意思
+
+故当声明为字符变量char，而输入了整数，在输出时表明了是%c，便会在ASCII中寻找对应的字符并打印出来
+
+
+
+```c
+#include <stdio.h>
+
+int main()
+{   
+	char a = 170;
+	printf("%d",a);
+	return 0;
+}
+```
+
+此时会输出-86，因为char 默认是signed，取值范围在-128~127，而170-127=43，128-43=85，因为是翻过来所以要+1得到86，结果就是-86
+
+
+
+对于字符串，可以
+
+```c
+char a[5];
+```
+
+则表示a中字符的数量
+
+变量名[索引号]=字符
+
+如承接上面的
+
+```c
+a[0]='b';
+a[1]='c';
+a[2]='d';
+a[3]='e';
+a[4]='f';
+```
+
+或用更简单的方式
+
+```c
+char a[5]={'b','c','d','e','f'};
+```
+
+打印字符串用的是%s
+
+```c
+#include <stdio.h>
+
+int main()
+{
+	char a[5] = { 'b','c','d','e','f'};
+	printf("%s", a);
+	return 0;
+}
+```
+
+这样写的话打印出来的bcdef后面会有乱码，因为没有字符串结束标志，也就是\0,
+
+所以
+
+```c
+#include <stdio.h>
+
+int main()
+{
+	char a[6] = { 'b','c','d','e','f','\0'};
+	printf("%s", a);
+	return 0;
+}
+```
+
+这样才能正常打印
+
+同时char a[6]的6是可以不写的，就直接char a[]，系统会自动帮你计算有几个字符
+
+或者
+
+```c
+    char a[]={"bcedf"};
+```
+
+则不用去在后面加\0，因为这是字符串常量，系统会帮你自动添加，甚至{}都可以不要
+
+就是‘
+
+```c
+char a[]="bcedf";
+```
+
